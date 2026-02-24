@@ -68,7 +68,7 @@
         .table-card { border-top-color: var(--secondary-purple); }
         .summary-card { border-top-color: var(--success-green); }
         .collections-card { border-top-color: var(--accent-pink); }
-        .cash-card { border-top-color: #f59e0b; } /* Orange accent for Cash */
+        .cash-card { border-top-color: #f59e0b; } 
         
         .result-card { 
             background: var(--dark-bg); 
@@ -184,7 +184,7 @@
 <body>
     <div id="install-banner" style="display: none; background: #3b82f6; color: white; padding: 12px; text-align: center; position: sticky; top: 0; z-index: 1000; font-weight: 600;">
         Install Big Wallet App for easier access! 
-        <button id="install-button" class="btn" style="background: white; color: #3b82f6; width: auto; padding: 5px 15px; margin-left: 10px; font-size: 0.8rem;">Install</button>
+        <button id="install-button" class="btn no-pdf-element" style="background: white; color: #3b82f6; width: auto; padding: 5px 15px; margin-left: 10px; font-size: 0.8rem;">Install</button>
     </div>
 
     <header class="app-header">
@@ -406,7 +406,6 @@
             const collField = document.getElementById('total-collections');
             if (collField) collField.value = totalCollections;
 
-            // Update Independent Cash at Hand Display
             const cashInput = document.getElementById('input-cash-at-hand');
             const cashDisplay = document.getElementById('cash-display-val');
             if (cashInput && cashDisplay) {
@@ -415,24 +414,28 @@
             }
         }
 
-        // Logic for the Save Record Button
+        // Logic for the Save Record Button - UPDATED TO CAPTURE WHOLE WINDOW
         document.getElementById('save-data-btn').addEventListener('click', function() {
-            const element = document.getElementById('ledger-content');
+            // Target the entire body to include the header and all cards
+            const element = document.body; 
             const date = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
             
-            // Add no-pdf class to elements we don't want in the report
+            // Apply no-pdf class to interactive elements
             document.querySelectorAll('.no-pdf-element').forEach(el => el.classList.add('no-pdf'));
 
             const opt = {
-                margin: 0.5,
+                margin: [0.3, 0.3], 
                 filename: `BigWallet_Ledger_${date}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
+                html2canvas: { 
+                    scale: 2,
+                    useCORS: true,
+                    scrollY: 0 // Captures from the very top of the page
+                },
                 jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
-                // Remove the no-pdf class after saving so the buttons reappear on the screen
                 document.querySelectorAll('.no-pdf-element').forEach(el => el.classList.remove('no-pdf'));
                 alert("Record Saved Successfully!");
             });
