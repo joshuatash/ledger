@@ -1,0 +1,18 @@
+{
+  "name": "Big Wallet Ledger Pro",
+  "short_name": "BigWallet",
+  "description": "Professional inventory and financial management for Big Wallet.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1e293b",
+  "theme_color": "#1e293b",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/5839/5839888.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
